@@ -1,27 +1,16 @@
 import Link from 'next/link'
-import { Inter } from '@next/font/google'
 import { MouseEvent, useEffect, useState } from 'react'
-
-const inter = Inter({ subsets: ['latin'] })
-
-
+import useSWR from 'swr'
+import { client, postMethod } from '@/lib/axios'
 
 export default function Home() {
-	const todosArray = [
-		{ id: 1, title: "買い物", content: "スーパーで肉を買う"},
-		{ id: 2, title: "勉強", content: "Next.jsを学習する"},
-		{ id: 3, title: "睡眠", content: "8時間ほど寝る"},
-		{ id: 4, title: "サウナ", content: "12分×3セット"},
-		{ id: 5, title: "外食", content: "ラーメン"},
-	]
-
-	const [todos, setTodos] = useState(todosArray)
-	const [addTodoData, setAddTodoData] = useState({id: 0, title: "", content: ""})
+	
+	const [todos, setTodos] = useState([])
+	const [addTodoData, setAddTodoData] = useState({title: "", content: ""})
 	
 	useEffect(() => {
-		const lastTodo = todos.slice(-1)[0]
-		setAddTodoData(addTodoData => ({...addTodoData, id: lastTodo.id + 1}))
-	}, [todos])
+		fetchTodos()
+	}, [])
 
 	const changeTodoData = (e: any) => {
 		if(e.target.id === "title") {
@@ -31,13 +20,35 @@ export default function Home() {
 		}
 	}
 
-	const addTodo = () => {
-		setTodos((todos) => ([...todos, addTodoData]))
-		setAddTodoData({id: 0, title: "", content: ""})
-	}
-
 	const deleteTodo = (id: number) => {
 		setTodos((current) => current.filter((todo) => todo.id !== id))
+	}
+
+	const fetchTodos = () => {
+		client
+			.get('/api/todo/list')
+			.then((res) => {
+				console.log(res.data)
+				setTodos(res.data)
+			})
+			.catch(error => {
+					console.error(error)
+			})
+	}
+
+	const registerTodo = () => {
+		postMethod(
+			'/api/todo/register', 
+			addTodoData, 
+		)
+		.then((res) => {
+			console.log("登録しました");
+			setAddTodoData({title: "", content: ""})
+			fetchTodos()
+		})
+		.catch((error) => {
+			console.log(error);
+		});
 	}
 
   return (
@@ -67,7 +78,7 @@ export default function Home() {
         </div>
 				<button
 						className="bg-blue-600 hover:bg-blue-500 text-white rounded px-4 py-2"
-						onClick={() => addTodo()}
+						onClick={() => registerTodo()}
 					>追加</button>
 			</div>
 			<div>
@@ -78,11 +89,11 @@ export default function Home() {
 						<p className='w-[15%]'>タイトル</p>
 						<p className='w-[30%]'>内容</p>
 					</li>
-					{todos.map((todo, index) => (
-						<li key={todo.id} className='flex gap-4 mb-3 items-center'>
-							<p className='w-[5%]'>{todo.id}</p>
-							<p className='w-[15%]'>{todo.title}</p>
-							<p className='w-[30%]'>{todo.content}</p>
+					{todos?.map((todo, index) => (
+						<li key={todo.Id} className='flex gap-4 mb-3 items-center'>
+							<p className='w-[5%]'>{todo.Id}</p>
+							<p className='w-[15%]'>{todo.Title}</p>
+							<p className='w-[30%]'>{todo.Content}</p>
 							<button
 								className="bg-red-600 hover:bg-red-500 text-white rounded px-4 py-2"
 								onClick={() => deleteTodo(todo.id)}

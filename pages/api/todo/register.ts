@@ -9,7 +9,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const response = await fetch('http://localhost:8080/api/users/')
-  const users = await response.json()
-  res.status(200).json({ users })
+  const response = await fetch('http://localhost:8080/api/todo/register')
+  const todos = await response.json()
+  res.status(200).json({ todos })
 }
