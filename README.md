@@ -9,10 +9,10 @@
 - Tailwind CSS導入
 - スタティックなToDo App
 - API route
-# 今後の学習や試したいことなど
 - ToDoApp(Goで作ったAPIサーバーを使用しCRUD)
-- CSR/SSG/SSR/ISRを理解する
+# 今後の学習や試したいことなど
 - any型を修正
+- CSR/SSG/SSR/ISRを理解する
 - 何か外部APIを試す
 # バージョンなど
 - package.json参照

@@ -92,7 +92,7 @@ export default function Home() {
 						onClick={() => registerTodo()}
 					>追加</button>
 			</div>
-			<div>
+			<div className='mb-6'>
 				<h2 className="text-2xl font-bold mb-1">一覧</h2>
 				<ul className='w-[762px]'>
 					<li className='flex gap-4'>
@@ -117,7 +117,7 @@ export default function Home() {
 					))}
 				</ul>
 			</div>
-			<Link href="./">トップに戻る</Link>
+			<Link className='text-xl text-blue-500 font-bold underline' href="/">トップに戻る</Link>
     </>
   )
 }

@@ -14,7 +14,23 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <Link href="./todo">Todo</Link>
+        <h1 className="text-4xl font-bold mb-3">メニュー</h1>
+        <div className="p-10">
+          <ul className='list-disc flex gap-10'>
+            <li className='text-2xl font-bold hover:text-blue-500 w-48'> 
+              <Link href="./todo">Todo管理</Link>
+            </li>
+            <li className='text-2xl font-bold hover:text-blue-500 w-48'> 
+              <Link href="#">Foo</Link>
+            </li>
+            <li className='text-2xl font-bold hover:text-blue-500 w-48'>  
+              <Link href="#">Hoge</Link>
+            </li>
+            <li className='text-2xl font-bold hover:text-blue-500 w-48'>  
+              <Link href="#">Buzz</Link>
+            </li>
+          </ul>
+        </div>
       </div>
     </>
   )

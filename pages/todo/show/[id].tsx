@@ -51,6 +51,7 @@ const TodoShowPage: NextPage = () => {
   return (
 		<>
 		<h1 className="text-4xl font-bold mb-3">Todo詳細・編集</h1>
+		<div className='mb-6'>
         <div className='mb-2'>
 					<label className="block font-medium">タイトル</label>
 					<input 
@@ -75,8 +76,10 @@ const TodoShowPage: NextPage = () => {
 						className="bg-blue-600 hover:bg-blue-500 text-white rounded px-4 py-2"
 						onClick={() => updateTodo(todoId)}
 					>更新</button>
-			<div>
-				<Link href="/todo">Todo管理ページへ</Link>
+		</div>
+			<div className='flex gap-10'>
+				<Link className='text-xl text-blue-500 font-bold underline' href="/todo">Todo管理ページへ</Link>
+				<Link className='text-xl text-blue-500 font-bold underline' href="/">トップに戻る</Link>
 			</div>
 		</>
   )
