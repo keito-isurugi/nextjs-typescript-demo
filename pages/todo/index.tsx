@@ -1,11 +1,10 @@
 import Link from 'next/link'
-import { MouseEvent, useEffect, useState } from 'react'
-import useSWR from 'swr'
+import {useRouter} from 'next/router'
+import { useEffect, useState } from 'react'
 import { client, postMethod } from '@/lib/axios'
-import axios from 'axios'
 
 export default function Home() {
-	
+	const router = useRouter()
 	const [todos, setTodos] = useState([])
 	const [addTodoData, setAddTodoData] = useState({title: "", content: ""})
 	
@@ -107,11 +106,13 @@ export default function Home() {
 							<p className='w-[15%]'>{todo.Title}</p>
 							<p className='w-[30%]'>{todo.Content}</p>
 							<button
+								className="bg-green-600 hover:bg-green-500 text-white rounded px-4 py-2"
+							onClick={() => router.push(`/todo/show/${todo.Id}`)}
+							>詳細</button>
+							<button
 								className="bg-red-600 hover:bg-red-500 text-white rounded px-4 py-2"
 								onClick={() => deleteTodo(todo.Id)}
-							>
-									削除
-								</button>
+							>削除</button>
 						</li>
 					))}
 				</ul>
