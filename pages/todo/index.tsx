@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { MouseEvent, useEffect, useState } from 'react'
 import useSWR from 'swr'
 import { client, postMethod } from '@/lib/axios'
+import axios from 'axios'
 
 export default function Home() {
 	
@@ -18,10 +19,6 @@ export default function Home() {
 		} else if(e.target.id === "content") {
 			setAddTodoData(addTodoData => ({...addTodoData, content: e.target.value}))
 		}
-	}
-
-	const deleteTodo = (id: number) => {
-		setTodos((current) => current.filter((todo) => todo.id !== id))
 	}
 
 	const fetchTodos = () => {
@@ -43,6 +40,21 @@ export default function Home() {
 		)
 		.then((res) => {
 			console.log("登録しました");
+			setAddTodoData({title: "", content: ""})
+			fetchTodos()
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+	}
+	const deleteTodo = (id: number) => {
+		console.log(id)
+		postMethod(
+			'/api/todo/delete', 
+			{id: id},
+		)
+		.then((res) => {
+			console.log("削除しました");
 			setAddTodoData({title: "", content: ""})
 			fetchTodos()
 		})
@@ -96,7 +108,7 @@ export default function Home() {
 							<p className='w-[30%]'>{todo.Content}</p>
 							<button
 								className="bg-red-600 hover:bg-red-500 text-white rounded px-4 py-2"
-								onClick={() => deleteTodo(todo.id)}
+								onClick={() => deleteTodo(todo.Id)}
 							>
 									削除
 								</button>
