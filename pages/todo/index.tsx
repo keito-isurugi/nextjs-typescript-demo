@@ -2,11 +2,18 @@ import Link from 'next/link'
 import {useRouter} from 'next/router'
 import { useEffect, useState } from 'react'
 import { client, postMethod } from '@/lib/axios'
+import internal from 'stream'
+
+type todo = {
+	id?: number
+	title: string
+	content: string
+}
 
 export default function Home() {
 	const router = useRouter()
-	const [todos, setTodos] = useState([])
-	const [addTodoData, setAddTodoData] = useState({title: "", content: ""})
+	const [todos, setTodos] = useState<todo[]>([])
+	const [addTodoData, setAddTodoData] = useState<todo>({title: "", content: ""})
 	
 	useEffect(() => {
 		fetchTodos()
@@ -46,7 +53,7 @@ export default function Home() {
 			console.log(error);
 		});
 	}
-	const deleteTodo = (id: number) => {
+	const deleteTodo = (id: number | undefined) => {
 		console.log(id)
 		postMethod(
 			'/api/todo/delete', 
@@ -101,17 +108,17 @@ export default function Home() {
 						<p className='w-[30%]'>内容</p>
 					</li>
 					{todos?.map((todo, index) => (
-						<li key={todo.Id} className='flex gap-4 mb-3 items-center'>
-							<p className='w-[5%]'>{todo.Id}</p>
-							<p className='w-[15%]'>{todo.Title}</p>
-							<p className='w-[30%]'>{todo.Content}</p>
+						<li key={todo.id} className='flex gap-4 mb-3 items-center'>
+							<p className='w-[5%]'>{todo.id}</p>
+							<p className='w-[15%]'>{todo.title}</p>
+							<p className='w-[30%]'>{todo.content}</p>
 							<button
 								className="bg-green-600 hover:bg-green-500 text-white rounded px-4 py-2"
-							onClick={() => router.push(`/todo/show/${todo.Id}`)}
+							onClick={() => router.push(`/todo/show/${todo.id}`)}
 							>詳細</button>
 							<button
 								className="bg-red-600 hover:bg-red-500 text-white rounded px-4 py-2"
-								onClick={() => deleteTodo(todo.Id)}
+								onClick={() => deleteTodo(todo.id)}
 							>削除</button>
 						</li>
 					))}

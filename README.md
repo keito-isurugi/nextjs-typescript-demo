@@ -14,5 +14,6 @@
 - any型を修正
 - CSR/SSG/SSR/ISRを理解する
 - 何か外部APIを試す
+- JWTで認証認可
 # バージョンなど
 - package.json参照
