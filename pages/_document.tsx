@@ -4,7 +4,7 @@ import Header from '@/components/Header';
 export default function Document() {
   return (
     <Html lang="en">
-      <Header/>
+      {/* <Header/> */}
       <Head />
       <body>
         <div className='p-5'>
