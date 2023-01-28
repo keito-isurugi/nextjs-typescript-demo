@@ -4,6 +4,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { parseCookies, setCookie, destroyCookie } from 'nookies'
 import { NextPageContext } from 'next';
 import { useAuth } from '@/components/context/AuthContext';
+import { useRouter } from 'next/router'
 
 type login = {
 	email: string,
@@ -53,12 +54,11 @@ const toastDemo = () => {
 export default function Login() {
 	const { register, handleSubmit, setError, clearErrors, formState: { errors, isSubmitting } } = useForm();
 	const auth = useAuth();
-
-	// console.log("auth user", auth?.user)
+	const router = useRouter()
 	
 	const onSubmit = async (data) => {
 		auth?.signin(data).then(() => {
-			// navigate("/", {state: {type: 'login' }})
+			router.push(`/`)
 		})
 	}
 
@@ -79,13 +79,13 @@ export default function Login() {
 
 	return (
 		<>
-		<button onClick={toastDemo}>Make me a toast</button>
+		{/* <button onClick={toastDemo}>Make me a toast</button>
 		<br />
 		<button onClick={viewCookie}>Cookie表示</button>
 		<br />
 		<button onClick={signout}>ログアウト</button>
-		<br />
-		<Toaster />
+		<br /> */}
+		{/* <Toaster /> */}
 		<section className="">
 			<div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 ">
 				<div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 border">

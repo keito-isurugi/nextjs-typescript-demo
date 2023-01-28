@@ -3,6 +3,7 @@ import React, {useContext, createContext, useState, ReactNode, useEffect} from "
 import { client, postMethod } from '@/lib/axios'
 import { parseCookies, setCookie, destroyCookie } from 'nookies'
 import { NextPageContext } from "next";
+import { useRouter } from 'next/router'
 
 export const authContext = createContext(null)
 // type Auth = {
@@ -15,6 +16,7 @@ export const authContext = createContext(null)
 // }
 const AuthProvide = ({children}) => {
   const auth = useAuthProvide();
+	
   return (
     <authContext.Provider value={auth}>
       {children}
@@ -29,6 +31,7 @@ export const useAuth = () => {
 
 const useAuthProvide = () => {
   const [user, setUser] = useState(null);
+	const router = useRouter()
 
   const register = async (registerData) => {
     console.log('regisetr!')
@@ -90,6 +93,7 @@ const useAuthProvide = () => {
   const signout = () => {
 		destroyCookie(null, 'accessToken')
 		setUser(null)
+		router.push(`/login`)
   }
 
 	// Cookieのトークンをヘッダーにセットしサーバーに渡す、

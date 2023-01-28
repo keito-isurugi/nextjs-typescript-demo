@@ -4,6 +4,7 @@ import type { NextPage } from 'next'
 import { useEffect, useState } from 'react'
 import { client, postMethod } from '@/lib/axios'
 import { useAuth } from '@/components/context/AuthContext';
+import { Button } from '@mui/material'
 
 const Header = () => {
   const auth = useAuth();
@@ -20,23 +21,31 @@ const Header = () => {
 				</button>
 			</div>
 			<div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-				<div className="text-sm lg:flex-grow">
-					<a href="#responsive-header" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
-						foo
-					</a>
-					<a href="#responsive-header" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
-						hoge
-					</a>
-					<a href="#responsive-header" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
-						bar
-					</a>
-				</div>
-				<div>
-					<p className="inline-block px-4 py-2 text-white mt-4 lg:mt-0">
+				{auth?.user !== null &&
+					<div className="text-sm lg:flex-grow">
+						<a href="#responsive-header" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+							foo
+						</a>
+						<a href="#responsive-header" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+							hoge
+						</a>
+						<a href="#responsive-header" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
+							bar
+						</a>
+					</div>
+				 }
+				<div className='flex gap-10'>
+					<p className="text-white">
 						{auth?.user?.name}
 					</p>
+					{auth?.user ? 
+						<Button 
+							className='bg-red-800 hover:bg-red-400 text-white font-semibold'
+							onClick={() => auth?.signout()}
+						>ログアウト</Button>
+					: ""}
 				</div>
-			</div>
+				</div>
 		</nav>
   )
 }
