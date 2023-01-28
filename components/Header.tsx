@@ -6,7 +6,6 @@ import { client, postMethod } from '@/lib/axios'
 import { useAuth } from '@/components/context/AuthContext';
 
 const Header = () => {
-	console.log("hoge")
   const auth = useAuth();
   console.log("header", auth?.user)
   return (
@@ -33,7 +32,9 @@ const Header = () => {
 					</a>
 				</div>
 				<div>
-					<a href="#" className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">Hello World</a>
+					<p className="inline-block px-4 py-2 text-white mt-4 lg:mt-0">
+						{auth?.user?.name}
+					</p>
 				</div>
 			</div>
 		</nav>
