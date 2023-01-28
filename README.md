@@ -15,5 +15,6 @@
 - CSR/SSG/SSR/ISRを理解する
 - 何か外部APIを試す
 - JWTで認証認可
+- Recoil
 # バージョンなど
 - package.json参照

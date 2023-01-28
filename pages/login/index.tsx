@@ -3,6 +3,7 @@ import { postMethod } from '@/lib/axios'
 import toast, { Toaster } from 'react-hot-toast';
 import { parseCookies, setCookie, destroyCookie } from 'nookies'
 import { NextPageContext } from 'next';
+import { useAuth } from '@/components/context/AuthContext';
 
 type login = {
 	email: string,
@@ -51,60 +52,39 @@ const toastDemo = () => {
 
 export default function Login() {
 	const { register, handleSubmit, setError, clearErrors, formState: { errors, isSubmitting } } = useForm();
+	const auth = useAuth();
 
+	// console.log("auth user", auth?.user)
+	
 	const onSubmit = async (data) => {
-		await postMethod(
-			'/api/login',
-			data
-		)
-		.then((res) => {
-			console.log("test")
-			console.log(res.data)
-			setTokenInCookie(res.data)
-		})
-		.catch(error => {
-			console.log(error)
+		auth?.signin(data).then(() => {
+			// navigate("/", {state: {type: 'login' }})
 		})
 	}
 
-	const auth = async () => {
+	const signout = async () => {
+		auth?.signout()
 		const cookie = parseCookies();
-		await postMethod(
-			'/api/auth',
-			"",
-			{ headers: { Authorization: cookie.accessToken } }
-		)
-		.then((res) => {
-			console.log(res.data)
-		})
-		.catch(error => {
-			console.log(error)
-		})
+		console.log(auth.user)
+		console.log(cookie.accessToken)
 	}
 
 
 	function viewCookie() {
 		const cookie = parseCookies();
     console.log(cookie.accessToken)
+    console.log(auth.user)
 	}
 
 
-	function setTokenInCookie(token: string, ctx?: NextPageContext) {
-		setCookie(null, 'accessToken', token, {
-      maxAge: 30 * 24 * 60 * 60,
-      path: '/',
-    })
-	}
 	return (
 		<>
 		<button onClick={toastDemo}>Make me a toast</button>
 		<br />
 		<button onClick={viewCookie}>Cookie表示</button>
 		<br />
-		<button onClick={auth}>auth</button>
+		<button onClick={signout}>ログアウト</button>
 		<br />
-		{/* <button onClick={handleSetCookie}>Cookieセット</button> */}
-		{/* <br /> */}
 		<Toaster />
 		<section className="">
 			<div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 ">
