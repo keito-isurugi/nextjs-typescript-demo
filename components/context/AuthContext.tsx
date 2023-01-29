@@ -29,8 +29,17 @@ export const useAuth = () => {
   return useContext(authContext)
 }
 
+type User = {
+	id: number,
+	name: string,
+	email: string,
+	password: string,
+	created_at: Date,
+	updated_at: Date,
+}
+
 const useAuthProvide = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
 	const router = useRouter()
 
   const register = async (registerData) => {

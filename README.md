@@ -11,11 +11,11 @@
 - スタティックなToDo App
 - API route
 - ToDoApp(Goで作ったAPIサーバーを使用しCRUD)
+- JWTでユーザー認証
 # 今後の学習や試したいことなど
 - any型を修正
 - CSR/SSG/SSR/ISRを理解する
 - 何か外部APIを試す
-- JWTで認証認可
 - Recoil
 # バージョンなど
 - package.json参照

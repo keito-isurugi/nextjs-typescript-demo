@@ -14,6 +14,6 @@ export const client = Axios.create({
     baseURL:  process.env.NEXT_PUBLIC_BACKEND_URL,
 });
 
-export const postMethod = async (methodName: any, params?: any, header?: any) => {
+export const postMethod = async (methodName: any, params: any, header?: any) => {
     return client.post(methodName, params, header);
 };
