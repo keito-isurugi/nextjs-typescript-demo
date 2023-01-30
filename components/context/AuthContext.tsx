@@ -1,21 +1,40 @@
 import axios from "axios";
-import React, {useContext, createContext, useState, ReactNode, useEffect} from "react"
+import React, {useContext, createContext, useState, ReactNode, useEffect, FC} from "react"
 import { client, postMethod } from '@/lib/axios'
 import { parseCookies, setCookie, destroyCookie } from 'nookies'
 import { NextPageContext } from "next";
 import { useRouter } from 'next/router'
 
-export const authContext = createContext(null)
-// type Auth = {
-// 	user: null,
-// 	isFetched: boolean,
-// 	register: (registerData: any) => Promise<void>,
-// 	signin: (loginData: any) => Promise<void>,
-// 	signout: () => Promise<void>,
-// 	saveProfile: (formData: any) => Promise<...>,
-// }
-const AuthProvide = ({children}) => {
-  const auth = useAuthProvide();
+
+export const authContext = createContext<Auth>({} as Auth)
+
+type MyComponenProps = {
+  children: React.ReactNode;
+};
+
+type Auth = {
+	user: User | null;
+	register: (registerData: any) => Promise<void>;
+	signin: (loginData: any) => Promise<void>;
+	signout: () => void;
+}
+
+type User = {
+	id: number,
+	name: string,
+	email: string,
+	password: string,
+	created_at: Date,
+	updated_at: Date,
+}
+
+type LoginData = {
+	email: string,
+	password: string
+}
+
+const AuthProvide: FC<MyComponenProps> = ({children}) => {
+  const auth: Auth = useAuthProvide();
 	
   return (
     <authContext.Provider value={auth}>
@@ -29,20 +48,11 @@ export const useAuth = () => {
   return useContext(authContext)
 }
 
-type User = {
-	id: number,
-	name: string,
-	email: string,
-	password: string,
-	created_at: Date,
-	updated_at: Date,
-}
-
 const useAuthProvide = () => {
   const [user, setUser] = useState<User | null>(null);
 	const router = useRouter()
 
-  const register = async (registerData) => {
+  const register = async (registerData: LoginData) => {
     console.log('regisetr!')
     console.log(registerData)
     return await axios.post('/register', registerData).then((res) => {
@@ -61,7 +71,7 @@ const useAuthProvide = () => {
 	}
 
 	// ログイン
-  const signin = async (loginData) => {
+  const signin = async (loginData: LoginData) => {
 		// email, passwordをサーバーに渡してトークンをCookieにセット
     try {
       const res = await postMethod('/api/login', loginData);
