@@ -5,7 +5,6 @@ import { parseCookies, setCookie, destroyCookie } from 'nookies'
 import { NextPageContext } from "next";
 import { useRouter } from 'next/router'
 
-
 export const authContext = createContext<Auth>({} as Auth)
 
 type MyComponenProps = {

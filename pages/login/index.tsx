@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { postMethod } from '@/lib/axios'
 import toast, { Toaster } from 'react-hot-toast';
 import { parseCookies, setCookie, destroyCookie } from 'nookies'
@@ -6,8 +6,8 @@ import { NextPageContext } from 'next';
 import { useAuth } from '@/components/context/AuthContext';
 import { useRouter } from 'next/router'
 
-type login = {
-	email: string,
+type FormValues = {
+	email: string
 	password: string
 }
 
@@ -52,11 +52,11 @@ const toastDemo = () => {
 }
 
 export default function Login() {
-	const { register, handleSubmit, setError, clearErrors, formState: { errors, isSubmitting } } = useForm();
+	const { register, handleSubmit, setError, clearErrors, formState: { errors, isSubmitting } } = useForm<FormValues>();
 	const auth = useAuth();
 	const router = useRouter()
 	
-	const onSubmit = async (data) => {
+	const onSubmit: SubmitHandler<FormValues> = async (data) => {
 		auth?.signin(data).then(() => {
 			router.push(`/`)
 		})
