@@ -13,8 +13,8 @@ type MyComponenProps = {
 
 type Auth = {
 	user: User | null;
-	register: (registerData: any) => Promise<void>;
-	signin: (loginData: any) => Promise<void>;
+	register: (registerData: LoginData) => Promise<void>;
+	signin: (loginData: LoginData) => Promise<void>;
 	signout: () => void;
 }
 

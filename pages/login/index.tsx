@@ -69,7 +69,6 @@ export default function Login() {
 		console.log(cookie.accessToken)
 	}
 
-
 	function viewCookie() {
 		const cookie = parseCookies();
     console.log(cookie.accessToken)

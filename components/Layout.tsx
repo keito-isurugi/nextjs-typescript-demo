@@ -6,7 +6,7 @@ type MyComponenProps = {
   children: React.ReactNode;
 };
 
-export const Layout: FC<MyComponenProps> = ({ children }) => {
+const Layout: FC<MyComponenProps> = ({ children }) => {
   return (
     <>
       <Header />
@@ -15,3 +15,5 @@ export const Layout: FC<MyComponenProps> = ({ children }) => {
     </>
   )
 }
+
+export default Layout;

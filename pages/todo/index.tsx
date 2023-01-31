@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import {useRouter} from 'next/router'
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { client, postMethod } from '@/lib/axios'
 import internal from 'stream'
 
@@ -19,7 +19,7 @@ export default function Home() {
 		fetchTodos()
 	}, [])
 
-	const changeTodoData = (e: any) => {
+	const changeTodoData = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
 		if(e.target.id === "title") {
 			setAddTodoData(addTodoData => ({...addTodoData, title: e.target.value}))
 		} else if(e.target.id === "content") {

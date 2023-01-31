@@ -1,9 +1,5 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { Inter } from '@next/font/google'
-import { Button } from '@mui/material';
-
-const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   return (
@@ -15,7 +11,6 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <Button className='bg-blue-500 hover:bg-blue-200'>hoge</Button>
         <h1 className="text-4xl font-bold mb-3">メニュー</h1>
         <div className="p-10">
           <ul className='list-disc flex gap-10'>

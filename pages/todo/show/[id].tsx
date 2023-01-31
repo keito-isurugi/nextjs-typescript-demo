@@ -43,7 +43,7 @@ const TodoShowPage: NextPage = () => {
 		});
 	}
 
-	const updateTodo = (todoId: any) => {
+	const updateTodo = (todoId: number | undefined) => {
 		console.log({id: todoId, title: title, content: content})
 		editTodo()
 	}
