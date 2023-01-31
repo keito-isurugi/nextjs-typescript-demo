@@ -18,5 +18,6 @@
 - ISR
 - 何か外部APIを試す
 - Recoil
+- issueテスト
 # バージョンなど
 - package.json参照
