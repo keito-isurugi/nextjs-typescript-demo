@@ -3,29 +3,19 @@ import Axios from 'axios'
 import { resolve } from 'path';
 import { rejects } from 'assert';
 import async from '../api/todo/register';
+import Button from '@mui/material/Button';
 
 export default function Home() {
 	const [datas, setDatas] = useState<any[]>([])
-	// 取得するデータ
-	// 図鑑番号
-	// 名前
-	// タイプ１
-	// タイプ２
-	// 高さ
-	// 重さ
-	// 種族値(HP、攻撃、防御、特攻、特防、素早さ)
-
-	// 進化前
-	// 進化後
-	// 特性
-	// 夢特性
 	// 画像(pokemon/1/sprites/back_default, pokemon/1/sprites/other, pokemon/1/sprites/versionsの３種類くらいある）
+
 	const fetchPokeSpecies = (id: number) => {
 		return new Promise((resolve, rejects) => {
 			Axios
 				.get(`https://pokeapi.co/api/v2/pokemon-species/${id}`)
 				.then((res) => {
 					let pokemon = res.data
+					// console.log(id)
 					// console.log('Data', pokemon)
 					resolve(pokemon)
 				})
@@ -73,21 +63,16 @@ export default function Home() {
 				})
 		})
 	}
-	const hoge = [1, 2, 3]
+	
 	function main() {
-		hoge.map(async(hoge, i) => {
+		[...Array(9)].map(async(_, i) => {
 			// let id = i +1
 			// 日本語情報取得用データ
 			let pokeSpecies = await fetchPokeSpecies(i + 1)
-			.then(async() => {
-				// 詳細情報取得用でーた
-				let poke = await fetchPoke(i + 1)
-			})
-			.then(async() => {
-				// 詳細情報取得用でーた
-				console.log('for i', i)
-			})
-			// await fetchPokeDetail(i + 1, pokeSpecies, poke)
+			// 詳細情報取得用でーた
+			let poke = await fetchPoke(i + 1)
+			// console.log('for i', i)
+			await fetchPokeDetail(i + 1, pokeSpecies, poke)
 		})
 	}
 
@@ -129,7 +114,7 @@ export default function Home() {
 			let speed = poke.stats[5].base_stat
 	
 			// 出力
-			console.log('No:', pokeNo)
+			// console.log('No:', pokeNo)
 			// console.log('名前:', name)
 			// console.log('ぶんるい:', classification)
 			// console.log('タイプ１:', type1)
@@ -138,16 +123,33 @@ export default function Home() {
 			// console.log('おもさ:', weight)
 			// console.log('図鑑:', flavor_text)
 			// console.log(`種族値: HP:${hp},攻撃:${attack},防御:${defense},特攻:${special_attack},特防:${special_defense},素早さ:${speed}`)
+			let poke_json = {
+				name: name,
+				classification: classification,
+				type1: type1,
+				type2: type2,
+				height: height,
+				weight: weight,
+				flavor_text: flavor_text,
+				status: {
+					hp: hp,
+					attack: attack,
+					defense: defense,
+					special_attack: special_attack,
+					special_defense: special_defense,
+					speed: speed,
+				},
+			}
+			console.log(poke_json)
 	}
 
-	useEffect(() => {
-		// main()
-	}, [])
+	// useEffect(() => {
+	// 	main()
+	// }, [datas])
+
   return (
     <>
-			pp
+			<Button className='bg-red-900 hover:bg-red-700' onClick={() => main()}>pk</Button>
     </>
   )
 }
-
-
