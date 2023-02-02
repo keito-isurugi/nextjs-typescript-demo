@@ -73,16 +73,22 @@ export default function Home() {
 				})
 		})
 	}
-	
-	async function main() {
-		for (let i = 1; i <= 9; i++) {
+	const hoge = [1, 2, 3]
+	function main() {
+		hoge.map(async(hoge, i) => {
+			// let id = i +1
 			// 日本語情報取得用データ
-			let pokeSpecies = await fetchPokeSpecies(i)
-			// 詳細情報取得用でーた
-			let poke = await fetchPoke(i)
-			// await fetchPokeDetail(i, pokeSpecies, poke)
-			console.log('No:', i)
-		}
+			let pokeSpecies = await fetchPokeSpecies(i + 1)
+			.then(async() => {
+				// 詳細情報取得用でーた
+				let poke = await fetchPoke(i + 1)
+			})
+			.then(async() => {
+				// 詳細情報取得用でーた
+				console.log('for i', i)
+			})
+			// await fetchPokeDetail(i + 1, pokeSpecies, poke)
+		})
 	}
 
 	const fetchPokeDetail  = async (i, pokeSpecies, poke) => {
@@ -94,19 +100,19 @@ export default function Home() {
 			// ぶんるい
 			const genera_ja =  pokeSpecies.genera.filter((g) => g.language.name === "ja")
 			let classification = genera_ja[0].genus
-			// // タイプ1
-			// let type1_datas = await fetchType(poke.types[0].type.url)
-			// let type1_data = type1_datas.names.filter((g) => g.language.name === "ja")
-			// let type1 = type1_data[0].name
-			// // タイプ２
-			// let type2_datas = ""
-			// let type2_data = ""
-			// let type2 = ""
-			// if(poke.types[1] !== undefined) {
-			// 	type2_datas = await fetchType(poke.types[1]?.type.url)
-			// 	type2_data = type2_datas.names.filter((g) => g.language.name === "ja")
-			// 	type2 = type2_data[0].name
-			// }
+			// タイプ1
+			let type1_datas = await fetchType(poke.types[0].type.url)
+			let type1_data = type1_datas.names.filter((g) => g.language.name === "ja")
+			let type1 = type1_data[0].name
+			// タイプ２
+			let type2_datas = ""
+			let type2_data = ""
+			let type2 = ""
+			if(poke.types[1] !== undefined) {
+				type2_datas = await fetchType(poke.types[1]?.type.url)
+				type2_data = type2_datas.names.filter((g) => g.language.name === "ja")
+				type2 = type2_data[0].name
+			}
 			// 高さ
 			let height = poke.height
 			// 重さ
@@ -135,12 +141,13 @@ export default function Home() {
 	}
 
 	useEffect(() => {
-		main()
+		// main()
 	}, [])
-
   return (
     <>
 			pp
     </>
   )
 }
+
+
