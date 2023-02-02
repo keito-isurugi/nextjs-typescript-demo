@@ -65,7 +65,7 @@ export default function Home() {
 	}
 	
 	function main() {
-		[...Array(9)].map(async(_, i) => {
+		[...Array(1)].map(async(_, i) => {
 			// let id = i +1
 			// 日本語情報取得用データ
 			let pokeSpecies = await fetchPokeSpecies(i + 1)
@@ -112,7 +112,9 @@ export default function Home() {
 			let special_attack = poke.stats[3].base_stat
 			let special_defense = poke.stats[4].base_stat
 			let speed = poke.stats[5].base_stat
-	
+			let img = poke.sprites.other["official-artwork"].front_default
+			let images = poke.sprites
+
 			// 出力
 			// console.log('No:', pokeNo)
 			// console.log('名前:', name)
@@ -124,6 +126,7 @@ export default function Home() {
 			// console.log('図鑑:', flavor_text)
 			// console.log(`種族値: HP:${hp},攻撃:${attack},防御:${defense},特攻:${special_attack},特防:${special_defense},素早さ:${speed}`)
 			let poke_json = {
+				no: pokeNo,
 				name: name,
 				classification: classification,
 				type1: type1,
@@ -139,7 +142,10 @@ export default function Home() {
 					special_defense: special_defense,
 					speed: speed,
 				},
+				img: img,
+				images: images
 			}
+			// console.log(images)
 			console.log(poke_json)
 	}
 
@@ -147,9 +153,32 @@ export default function Home() {
 	// 	main()
 	// }, [datas])
 
+	const originalData = {
+		poke: [
+			{name: "123"},
+			{name: "456"},
+			{name: "789"},
+		]
+	};
+	const fileDl = () => {
+		const fileName = "mochi.json";
+		const data = JSON.stringify(originalData);
+		// const blob = new Blob(['あいうえお'],{type:"text/plain"});
+		const link = document.createElement("a");
+		// link.href = URL.createObjectURL(blob);
+		link.href = "data:text/plain," + encodeURIComponent(data);
+		link.download = fileName;
+		link.click();
+	}
   return (
     <>
 			<Button className='bg-red-900 hover:bg-red-700' onClick={() => main()}>pk</Button>
+			<Button className='bg-blue-900 hover:bg-blue-700' onClick={() => fileDl()}>File</Button>
+			<div>
+				{originalData.poke.map((i) => (
+					<p>{i.name}</p>
+				))}
+			</div>
     </>
   )
 }
