@@ -1,0 +1,3 @@
+.card:hover {
+  @apply transform duration-500 scale-110;
+}

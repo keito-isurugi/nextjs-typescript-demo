@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import pokemonJson from '@/lib/json/pokemon.json';
+import styels from '@/public/css/pokemon.module.css'
 
 export default function Home() {
 	const [datas, setDatas] = useState<any[]>([])
@@ -172,7 +173,6 @@ export default function Home() {
 
   return (
     <>
-			<Button onClick={handleOpen}>Open modal</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -198,7 +198,7 @@ export default function Home() {
 								<dd className='font-bold text-xl'>{pokemonJson[pokeNum].type1}、{pokemonJson[pokeNum].type2}</dd>
 							</dl>
 							<dl className='flex flex-wrap mb-2'>
-								<dt className='font-bold text-xl'>高さ：{pokemonJson[pokeNum].height / 10}m　重さ：{pokemonJson[pokeNum].weight}kg</dt>
+								<dt className='font-bold text-xl'>高さ：{pokemonJson[pokeNum].height / 10}m　重さ：{pokemonJson[pokeNum].weight / 10}kg</dt>
 							</dl>
 							<dl className='flex mb-2'>
 								<dt className='w-3/6 font-bold text-xl'>説明：</dt>
@@ -212,7 +212,7 @@ export default function Home() {
 			<Button className='bg-blue-900 hover:bg-blue-700' onClick={() => fileDl()}>File</Button> */}
 			<div className='flex gap-4 flex-wrap justify-center'>
 				{pokemonJson.map((data, index) => (
-					<div className="w-1/6 rounded overflow-hidden shadow-lg">
+					<div className={`w-1/6 rounded overflow-hidden shadow-lg ${styels.card}`}>
 						<div className="w-full mx-auto bg-gray-300 cursor-pointer" onClick={() => setPokeDetail(index)}>
 							<img className="w-full" src={data.img} alt={data.name} />	
 						</div>
