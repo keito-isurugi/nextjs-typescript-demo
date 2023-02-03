@@ -4,10 +4,10 @@ import { resolve } from 'path';
 import { rejects } from 'assert';
 import async from '../api/todo/register';
 import Button from '@mui/material/Button';
+import Data from '@/lib/json/data.json'; // 追加
 
 export default function Home() {
 	const [datas, setDatas] = useState<any[]>([])
-	// 画像(pokemon/1/sprites/back_default, pokemon/1/sprites/other, pokemon/1/sprites/versionsの３種類くらいある）
 
 	const fetchPokeSpecies = (id: number) => {
 		return new Promise((resolve, rejects) => {
@@ -15,8 +15,6 @@ export default function Home() {
 				.get(`https://pokeapi.co/api/v2/pokemon-species/${id}`)
 				.then((res) => {
 					let pokemon = res.data
-					// console.log(id)
-					// console.log('Data', pokemon)
 					resolve(pokemon)
 				})
 				.catch(error => {
@@ -30,19 +28,6 @@ export default function Home() {
 				.get(`https://pokeapi.co/api/v2/pokemon/${id}`)
 				.then((res) => {
 					let pokemon = res.data
-					// console.log('Data', pokemon)
-					// console.log('img_back_default', pokemon.sprites.back_default)
-					// console.log('img_back_female', pokemon.sprites.back_female)
-					// console.log('img_back_shiny_default', pokemon.sprites.back_shiny)
-					// console.log('img_back_shiny_female', pokemon.sprites.back_shiny_female)
-					// console.log('img_front_default', pokemon.sprites.front_default)
-					// console.log('img_front_female', pokemon.sprites.front_female)
-					// console.log('img_front_shiny_default', pokemon.sprites.front_shiny)
-					// console.log('img_front_shiny_female', pokemon.sprites.front_shiny_female)
-					// pokemon.sprites.other.official-artwork.front_default
-					// pokemon.sprites.other.official-artwork.front_shiny
-					// console.log('img_front', pokemon.sprites.other["official-artwork"].front_default)
-					// console.log('img_front', pokemon.sprites.other["official-artwork"].front_shiny)
 					resolve(pokemon)
 				})
 				.catch(error => {
@@ -64,16 +49,29 @@ export default function Home() {
 		})
 	}
 	
-	function main() {
-		[...Array(1)].map(async(_, i) => {
-			// let id = i +1
+	const main = async() => {
+		let pokeDatas = [];
+		await Promise.all([...Array(3)].map(async(_, i) => {
 			// 日本語情報取得用データ
 			let pokeSpecies = await fetchPokeSpecies(i + 1)
 			// 詳細情報取得用でーた
 			let poke = await fetchPoke(i + 1)
-			// console.log('for i', i)
-			await fetchPokeDetail(i + 1, pokeSpecies, poke)
-		})
+			let pokeData = await fetchPokeDetail(i + 1, pokeSpecies, poke)
+			pokeDatas.push(pokeData)
+		}))
+		await pokeDatasSet(pokeDatas)
+		console.log("終了！！")
+	}
+
+	const onCliciMain = () => {
+		(async ()=>{
+			console.log("非同期的に呼び出す")
+			await main()
+		}).call([])
+	}
+
+	const pokeDatasSet = async(pokeDatas) => {
+		setDatas(pokeDatas)
 	}
 
 	const fetchPokeDetail  = async (i, pokeSpecies, poke) => {
@@ -116,15 +114,6 @@ export default function Home() {
 			let images = poke.sprites
 
 			// 出力
-			// console.log('No:', pokeNo)
-			// console.log('名前:', name)
-			// console.log('ぶんるい:', classification)
-			// console.log('タイプ１:', type1)
-			// console.log('タイプ２:', type2)
-			// console.log('たかさ:', height)
-			// console.log('おもさ:', weight)
-			// console.log('図鑑:', flavor_text)
-			// console.log(`種族値: HP:${hp},攻撃:${attack},防御:${defense},特攻:${special_attack},特防:${special_defense},素早さ:${speed}`)
 			let poke_json = {
 				no: pokeNo,
 				name: name,
@@ -145,38 +134,26 @@ export default function Home() {
 				img: img,
 				images: images
 			}
-			// console.log(images)
-			console.log(poke_json)
+			return poke_json
 	}
 
-	// useEffect(() => {
-	// 	main()
-	// }, [datas])
 
-	const originalData = {
-		poke: [
-			{name: "123"},
-			{name: "456"},
-			{name: "789"},
-		]
-	};
 	const fileDl = () => {
-		const fileName = "mochi.json";
-		const data = JSON.stringify(originalData);
-		// const blob = new Blob(['あいうえお'],{type:"text/plain"});
+		const fileName = "pokemon.json";
+		const data = JSON.stringify(datas);
 		const link = document.createElement("a");
-		// link.href = URL.createObjectURL(blob);
 		link.href = "data:text/plain," + encodeURIComponent(data);
 		link.download = fileName;
 		link.click();
 	}
+
   return (
     <>
-			<Button className='bg-red-900 hover:bg-red-700' onClick={() => main()}>pk</Button>
+			<Button className='bg-red-900 hover:bg-red-700' onClick={() => onCliciMain()}>pk</Button>
 			<Button className='bg-blue-900 hover:bg-blue-700' onClick={() => fileDl()}>File</Button>
 			<div>
-				{originalData.poke.map((i) => (
-					<p>{i.name}</p>
+				{datas.map((data,index) => (
+					<p key={index}>{data.name}</p>
 				))}
 			</div>
     </>
