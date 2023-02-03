@@ -1,10 +1,56 @@
 import { useEffect, useState } from 'react'
 import Axios from 'axios'
 import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 export default function Home() {
 	const [datas, setDatas] = useState<any[]>([])
 	const [generation, setGeneration] = useState<Number>(1)
+	const [pokeNum, setPokeNum] = useState(Array.from(Array(151).keys(), x => x + 1))
+	const [isLoading, setIsLoading] = useState(false)
+
+	const createPokeNomArray = (gen) => {
+		switch (gen) {
+			case 1:
+				setPokeNum(Array.from(Array(151).keys(), x => x + 1))
+				break;
+			case 2:
+				setPokeNum(Array.from(Array(100).keys(), x => x + 152))
+				break;
+			case 3:
+				setPokeNum(Array.from(Array(135).keys(), x => x + 252))
+				break;
+			case 4:
+				setPokeNum(Array.from(Array(107).keys(), x => x + 387))
+				break;
+			case 5:
+				setPokeNum(Array.from(Array(156).keys(), x => x + 494))
+				break;
+			case 6:
+				setPokeNum(Array.from(Array(72).keys(), x => x + 650))
+				break;
+			case 7:
+				setPokeNum(Array.from(Array(88).keys(), x => x + 722))
+				break;
+			case 8:
+				setPokeNum(Array.from(Array(96).keys(), x => x + 810))
+				break;
+			case 9:
+				setPokeNum(Array.from(Array(103).keys(), x => x + 906))
+				break;
+			case 999:
+				setPokeNum(Array.from(Array(1008).keys(), x => x + 1))
+				break;
+			default:
+				setPokeNum(Array.from(Array(151).keys(), x => x + 1))
+				break;
+		}
+	}
+
+	const onClickSetGeneration = (num) => {
+		setGeneration(num)
+		createPokeNomArray(num)
+	}
 
 	const fetchPokeSpecies = (id: number) => {
 		return new Promise((resolve, rejects) => {
@@ -16,6 +62,7 @@ export default function Home() {
 				})
 				.catch(error => {
 						console.error(error)
+						setIsLoading(false)
 				})
 		})
 	}
@@ -29,9 +76,11 @@ export default function Home() {
 				})
 				.catch(error => {
 						console.error(error)
+						setIsLoading(false)
 				})
 		})
 	}
+
 	const fetchType = (url) => {
 		return new Promise((resolve, reject) => {
 			Axios
@@ -42,18 +91,20 @@ export default function Home() {
 				})
 				.catch(error => {
 						console.error(error)
+						setIsLoading(false)
 				})
 		})
 	}
 	
 	const main = async() => {
 		let pokeDatas = [];
-		await Promise.all([...Array(151)].map(async(_, i) => {
+		setIsLoading(true)
+		await Promise.all(pokeNum.map(async(num, i) => {
 			// 日本語情報取得用データ
-			let pokeSpecies = await fetchPokeSpecies(i + 1)
+			let pokeSpecies = await fetchPokeSpecies(num)
 			// 詳細情報取得用でーた
-			let poke = await fetchPoke(i + 1)
-			let pokeData = await fetchPokeDetail(i + 1, pokeSpecies, poke)
+			let poke = await fetchPoke(num)
+			let pokeData = await fetchPokeDetail(num, pokeSpecies, poke)
 			pokeDatas.push(pokeData)
 		}))
 		await pokeDatasSet(pokeDatas)
@@ -70,6 +121,7 @@ export default function Home() {
 	const pokeDatasSet = async(pokeDatas) => {
 		pokeDatas.sort((a, b) => a.no - b.no);
 		setDatas(pokeDatas)
+		setIsLoading(false)
 	}
 
 	const fetchPokeDetail  = async (i, pokeSpecies, poke) => {
@@ -80,7 +132,7 @@ export default function Home() {
 			let name = name_ja[0].name
 			// ぶんるい
 			const genera_ja =  pokeSpecies.genera.filter((g) => g.language.name === "ja")
-			let classification = genera_ja[0].genus
+			let classification = genera_ja[0]?.genus
 			// タイプ1
 			let type1_datas = await fetchType(poke.types[0].type.url)
 			let type1_data = type1_datas.names.filter((g) => g.language.name === "ja")
@@ -99,8 +151,8 @@ export default function Home() {
 			// 重さ
 			let weight = poke.weight
 			// 図鑑
-			const flavor_text_entries_ja =  pokeSpecies.flavor_text_entries.filter((g) => g.language.name === "ja")
-			let flavor_text = flavor_text_entries_ja[0].flavor_text
+			const flavor_text_entries_ja =  pokeSpecies?.flavor_text_entries.filter((g) => g.language.name === "ja")
+			let flavor_text = flavor_text_entries_ja[0]?.flavor_text
 			// 種族値(HP、攻撃、防御、特攻、特防、素早さ)
 			let hp = poke.stats[0].base_stat
 			let attack = poke.stats[1].base_stat
@@ -131,7 +183,7 @@ export default function Home() {
 					speed: speed,
 				},
 				img: img,
-				generation: 1
+				generation: generation
 				// images: images
 			}
 			return poke_json
@@ -139,14 +191,15 @@ export default function Home() {
 
 
 	const fileDl = () => {
-		const fileName = "pokemon.json";
+		setIsLoading(true)
+		const fileName = `pokemon_${generation}.json`;
 		const data = JSON.stringify(datas);
 		const link = document.createElement("a");
 		link.href = "data:text/plain," + encodeURIComponent(data);
 		link.download = fileName;
 		link.click();
+		setIsLoading(false)
 	}
-
 
   return (
     <>
@@ -154,15 +207,16 @@ export default function Home() {
 				<select 
 					id="generation"
 					className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-3 font-bold"
-					onChange={(e) => setGeneration(Number(e.target.value))}
+					onChange={(e) => onClickSetGeneration(Number(e.target.value))}
 					>
 					<option selected>世代を選択してください</option>
 					{[...Array(9)].map((_, i) => (
 						<option key={i+1} value={i+1}>第{i+1}世代</option>
 					))}
+					<option value={999}>全世代</option>
 				</select>
-				<Button className='bg-red-700 hover:bg-red-500 text-white font-bold' onClick={() => onCliciMain()}>ポケモンデータ取得</Button>
-				<Button className='bg-blue-700 hover:bg-blue-500 text-white font-bold' onClick={() => fileDl()}>jsonファイルDL</Button>
+				<LoadingButton loading={isLoading} className='bg-red-600 hover:bg-red-400 text-white font-bold' onClick={() => onCliciMain()}>ポケモンデータ取得</LoadingButton>
+				<LoadingButton loading={isLoading} className='bg-blue-600 hover:bg-blue-400 text-white font-bold' onClick={() => fileDl()}>jsonファイルDL</LoadingButton>
 			</div>
     </>
   )

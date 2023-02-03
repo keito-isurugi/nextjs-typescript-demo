@@ -16,6 +16,7 @@
     "@material-ui/lab": "^4.0.0-alpha.61",
     "@material-ui/styles": "^4.11.5",
     "@mui/base": "^5.0.0-alpha.115",
+    "@mui/lab": "^5.0.0-alpha.118",
     "@mui/material": "^5.11.6",
     "@next/font": "13.1.4",
     "@types/node": "18.11.18",
