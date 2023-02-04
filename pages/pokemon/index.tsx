@@ -28,37 +28,26 @@ export default function Home() {
 		switch (gen) {
 			case 1:
 				return "赤・緑・青"
-				break;
 			case 2:
 				return "金・銀"
-				break;
 			case 3:
 				return "ルビー・サファイア"
-			break;
 			case 4:
 				return "ダイヤモンド・パール"
-			break;
 			case 5:
 				return "ブラック・ホワイト"
-			break;
 			case 6:
 				return "X・Y"
-			break;
 			case 7:
 				return "Uサン・Uムーン"
-			break;
 			case 8:
 				return "ソード・シールド"
-			break;
 			case 9:
 				return "スカーレット・ヴァイオレット"
-			break;
 			case 999:
 				return "全世代"
-			break;
 			default:
-				"全世代"
-			break;
+				return "全世代"
 		}
 	}
 	
@@ -75,12 +64,15 @@ export default function Home() {
 	const setPokeDatas = (num) => {
 		if(num === 999) {
 			setDatas(pokemonJson)
+			setGeneration(num)
 			return
 		}
 		const dataCp = pokemonJson.filter((data) => data.generation === num)
 		setDatas(dataCp)
 		setGeneration(num)
 	}
+
+	console.log(generation)
 
   return (
     <>
@@ -100,8 +92,8 @@ export default function Home() {
 			</div>
 			<div className='flex gap-4 flex-wrap justify-between'>
 				{datas.map((data, index) => (
-					<div key={index} className={`w-1/6 rounded overflow-hidden shadow-lg ${styels.card}`}>
-						<div className="w-full mx-auto bg-gray-300 cursor-pointer" onClick={() => setPokeDetail(index)}>
+					<div key={index} className={`w-1/6 rounded overflow-hidden shadow-lg cursor-pointer ${styels.card}`} onClick={() => setPokeDetail(index)}>
+						<div className="w-full mx-auto bg-gray-300">
 							<img className="w-full" src={data.img} alt={data.name} />	
 						</div>
 						<div className="px-2 py-2">

@@ -204,6 +204,7 @@ export default function Home() {
   return (
     <>
 			<div className='flex gap-3'>
+				<p className='font-bold text-3xl'>ポケモン図鑑</p>
 				<select 
 					id="generation"
 					className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-3 font-bold"
