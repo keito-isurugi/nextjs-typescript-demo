@@ -12,7 +12,7 @@ export default function Home() {
 
 	useEffect(() => {
 		// データベースからデータを取得する
-		const postDatas = collection(db, "posts")
+		const postDatas = collection(db, "pokemon")
 		getDocs(postDatas).then((snapShot) => {
 			setPosts(snapShot.docs.map((doc) => ({ ...doc.data() })))
 		})
@@ -23,21 +23,12 @@ export default function Home() {
 		})
 	}, [])
 
-	const postArray = [
-		{title: "aaa", text: "aaa"},
-		{title: "bbb", text: "bbb"},
-		{title: "ccc", text: "ccc"},
-	] 
+	// const pokeArray = [{"no":1,"name":"フシギダネ","classification":"たねポケモン","type1":"くさ","type2":"どく","height":7,"weight":69,"flavor_text":"生まれたときから　背中に\n不思議な　タネが　植えてあって\n体と　ともに　育つという。","status":{"hp":45,"attack":49,"defense":49,"special_attack":65,"special_defense":65,"speed":45},"img":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png","generation":1},{"no":2,"name":"フシギソウ","classification":"たねポケモン","type1":"くさ","type2":"どく","height":10,"weight":130,"flavor_text":"つぼみが　背中に　ついていて\n養分を　吸収していくと\n大きな　花が　咲くという。","status":{"hp":60,"attack":62,"defense":63,"special_attack":80,"special_defense":80,"speed":60},"img":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png","generation":1}]
 
 	const registerPost = () => {
-		console.log("hoge");
-		// setDoc(doc(db, "posts", "LA"), {
-		// 	title: "データ追加テスト",
-		// 	text: "データ追加テストです。",
-		// });
-		postArray.map((post, index) => {
-			setDoc(doc(db, "hogehoge", `json_register_test_${index}`), post);
-		})
+		// pokeArray.map((poke, index) => {
+		// 	setDoc(doc(db, "pokemon", `poke_${index}`), poke);
+		// })
 	}
 
   return (
@@ -47,8 +38,7 @@ export default function Home() {
 				{posts?.map((post, index) => (
 					<>
 						<div key={index}>
-							<p>{post?.title}</p>
-							<p>{post?.text}</p>
+							<p>{post?.name}</p>
 						</div>
 					</>
 				))}
