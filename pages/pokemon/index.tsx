@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react'
 import Modal from '@mui/material/Modal';
 import pokemonJson from '@/lib/json/pokemon_999.json';
 import styels from '@/public/css/pokemon.module.css'
-import dynamic from 'next/dynamic'
 import Button from '@mui/material/Button';
+import db from "@/lib/firabase"
+import { collection, getDocs, doc, onSnapshot, setDoc } from "firebase/firestore"; 
 
 export default function Home() {
-	const [datas, setDatas] = useState<any[]>(pokemonJson)
+	const [datas, setDatas] = useState<any[]>([])
 	const [pokeNum, setPokeNum] = useState<Number>(0)
 	const [generation, setGeneration] = useState<Number>(999)
 	const [open, setOpen] = useState(false);
@@ -23,6 +24,24 @@ export default function Home() {
 		boxShadow: 24,
 		p: 4,
 	};
+
+	useEffect(() => {
+		// データベースからデータを取得する
+		const pokeDatas = collection(db, "pokemon")
+		getDocs(pokeDatas).then((snapShot) => {
+			let pokeDatas = snapShot.docs.map((doc) => ({ ...doc.data() }))
+			// setDatas(pokeDatas.sort((a, b) => a.no - b.no))
+			pokeDatas = pokeDatas.sort((a, b) => a.no - b.no)
+			console.log(pokeDatas)
+		})
+
+		// リアルタイムで取得
+		onSnapshot(pokeDatas, (post) => {
+			setDatas(post.docs.map((doc) => ({ ...doc.data() })))
+		})
+	}, [])
+
+	console.log(datas)
 
 	const createPokeNomArray = (gen) => {
 		switch (gen) {
@@ -72,8 +91,6 @@ export default function Home() {
 		setGeneration(num)
 	}
 
-	console.log(generation)
-
   return (
     <>
 		<div className='px-10'>
@@ -111,27 +128,27 @@ export default function Home() {
       >
 				<div className="rounded overflow-hidden shadow-lg bg-white" style={style}>
 					<div className="w-full mx-auto bg-gray-300">
-						<img className="w-full" src={datas[pokeNum].img} alt={datas[pokeNum].name} />	
+						<img className="w-full" src={datas[pokeNum]?.img} alt={datas[pokeNum]?.name} />	
 					</div>
 					<div className="px-3 py-2">
 						<dl className='flex flex-wrap mb-2'>
-							<dt className='font-bold text-xl'>No.{datas[pokeNum].no}：</dt>
-							<dd className='font-bold text-xl'>{datas[pokeNum].name}</dd>
+							<dt className='font-bold text-xl'>No.{datas[pokeNum]?.no}：</dt>
+							<dd className='font-bold text-xl'>{datas[pokeNum]?.name}</dd>
 						</dl>
 						<dl className='flex flex-wrap mb-2'>
 							<dt className='font-bold text-xl'>分類：</dt>
-							<dd className='font-bold text-xl'>{datas[pokeNum].classification}</dd>
+							<dd className='font-bold text-xl'>{datas[pokeNum]?.classification}</dd>
 						</dl>
 						<dl className='flex flex-wrap mb-2'>
 							<dt className='font-bold text-xl'>タイプ：</dt>
-							<dd className='font-bold text-xl'>{datas[pokeNum].type1}、{datas[pokeNum].type2}</dd>
+							<dd className='font-bold text-xl'>{datas[pokeNum]?.type1}、{datas[pokeNum]?.type2}</dd>
 						</dl>
 						<dl className='flex flex-wrap mb-2'>
-							<dt className='font-bold text-xl'>高さ：{datas[pokeNum].height / 10}m　重さ：{datas[pokeNum].weight / 10}kg</dt>
+							<dt className='font-bold text-xl'>高さ：{datas[pokeNum]?.height / 10}m　重さ：{datas[pokeNum]?.weight / 10}kg</dt>
 						</dl>
 						<dl className='flex mb-2'>
 							<dt className='w-3/6 font-bold text-xl'>説明：</dt>
-							<dd className='font-bold text-xl'>{datas[pokeNum].flavor_text}</dd>
+							<dd className='font-bold text-xl'>{datas[pokeNum]?.flavor_text}</dd>
 						</dl>
 					</div>
 				</div>
