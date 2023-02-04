@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import db from "@/lib/firabase"
-import { collection, getDocs, doc, onSnapshot } from "firebase/firestore"; 
-
+import { collection, getDocs, doc, onSnapshot, setDoc } from "firebase/firestore"; 
+import { Button } from "@mui/material";
 // const querySnapshot = await getDocs(collection(db, "users"));
 // querySnapshot.forEach((doc) => {
 //   console.log(`${doc.id} => ${doc.data()}`);
@@ -23,7 +23,22 @@ export default function Home() {
 		})
 	}, [])
 
-	console.log(posts)
+	const postArray = [
+		{title: "aaa", text: "aaa"},
+		{title: "bbb", text: "bbb"},
+		{title: "ccc", text: "ccc"},
+	] 
+
+	const registerPost = () => {
+		console.log("hoge");
+		// setDoc(doc(db, "posts", "LA"), {
+		// 	title: "データ追加テスト",
+		// 	text: "データ追加テストです。",
+		// });
+		postArray.map((post, index) => {
+			setDoc(doc(db, "hogehoge", `json_register_test_${index}`), post);
+		})
+	}
 
   return (
     <>
@@ -38,6 +53,8 @@ export default function Home() {
 					</>
 				))}
       </div>
+			<h2>データ追加</h2>
+			<Button onClick={() => registerPost()}>データ追加です</Button>
     </>
   )
 }
