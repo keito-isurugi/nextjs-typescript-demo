@@ -4,7 +4,7 @@ import pokemonJson from '@/lib/json/pokemon_999.json';
 import styels from '@/public/css/pokemon.module.css'
 import Button from '@mui/material/Button';
 import db from "@/lib/firabase"
-import { collection, getDocs, doc, onSnapshot, setDoc } from "firebase/firestore"; 
+import { collection, getDocs, doc, onSnapshot, setDoc, query, where, orderBy, limit } from "firebase/firestore";
 
 export default function Home() {
 	const [datas, setDatas] = useState<any[]>([])
@@ -19,29 +19,18 @@ export default function Home() {
 		left: '50%',
 		transform: 'translate(-50%, -50%)',
 		width: 400,
-		// bgcolor: 'background.paper',
 		border: '1px solid #000',
 		boxShadow: 24,
 		p: 4,
 	};
 
 	useEffect(() => {
-		// データベースからデータを取得する
 		const pokeDatas = collection(db, "pokemon")
-		getDocs(pokeDatas).then((snapShot) => {
-			let pokeDatas = snapShot.docs.map((doc) => ({ ...doc.data() }))
-			// setDatas(pokeDatas.sort((a, b) => a.no - b.no))
-			pokeDatas = pokeDatas.sort((a, b) => a.no - b.no)
-			console.log(pokeDatas)
-		})
-
-		// リアルタイムで取得
-		onSnapshot(pokeDatas, (post) => {
-			setDatas(post.docs.map((doc) => ({ ...doc.data() })))
+		getDocs(query(pokeDatas, orderBy('no'))).then((snapShot) => {
+			setDatas(snapShot.docs.map((doc) => ({ ...doc.data() })))
 		})
 	}, [])
 
-	console.log(datas)
 
 	const createPokeNomArray = (gen) => {
 		switch (gen) {
@@ -89,6 +78,14 @@ export default function Home() {
 		const dataCp = pokemonJson.filter((data) => data.generation === num)
 		setDatas(dataCp)
 		setGeneration(num)
+	}
+
+	const chageGenerationGetPoke = (num) => {
+		const pokeDatas = collection(db, "pokemon")
+		getDocs(query(pokeDatas, where("generation", "=", num),  orderBy('no')))
+		.then((snapShot) => {
+			setDatas(snapShot.docs.map((doc) => ({ ...doc.data() })))
+		})
 	}
 
   return (
