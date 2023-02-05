@@ -1,3 +1,5 @@
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Modal from '@mui/material/Modal';
 import pokemonJson from '@/lib/json/pokemon_1.json';
@@ -7,6 +9,7 @@ import Button from '@mui/material/Button';
 import { usePokeInfoHooks } from '@/hooks/pokemon/usePokeInfoHooks'
 
 export default function Home() {
+	const router = useRouter()
 	const [datas, setDatas] = useState<any[]>(pokemonJson)
 	const [pokeNum, setPokeNum] = useState<Number>(0)
 	const [generation, setGeneration] = useState<Number>(999)
@@ -93,15 +96,13 @@ export default function Home() {
 				</select>
 			</div>
 
-			<ul 
-				// className='w-[90%] flex flex-wrap gap-x-1 gap-y-3 justify-between my-0 mx-auto'
-				className={`${styles.poke_wrap}`}
-			>
+			<ul className={`${styles.poke_wrap}`}>
 				{datas.map((data, index) => (
 					<li 
 						key={index} 
-						className={`w-[11.5vw] rounded overflow-hidden shadow-lg cursor-pointer ${styles.card}`} 
-						onClick={() => setPokeDetail(index)}
+						className={`rounded shadow-lg cursor-pointer ${styles.card}`} 
+						// onClick={() => setPokeDetail(index)}
+						onClick={() => router.push(`/pokemon/show/${index}`)}
 					>
 						<div className="w-full mx-auto bg-gray-300">
 							<img className="w-full" src={data.img} alt={data.name} />	

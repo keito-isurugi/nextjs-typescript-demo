@@ -1,4 +1,5 @@
 export const usePokeInfoHooks = () => {
+
 	const typeImage = (type: string) => {
 		switch (type) {
 			case "ノーマル":
@@ -40,6 +41,18 @@ export const usePokeInfoHooks = () => {
 		}
 	}
 
-return [typeImage];
+	const statusBarIsValue = (status: number) => {
+		const statusRatio = Math.round(status / 15)
+		return Array.from(Array(statusRatio).keys(), x => x)
+	}	
+
+	const statusBarNonValue = (status: number) => {
+		const statusRatio = 15 -  Math.round(status / 15)
+		return Array.from(Array(statusRatio).keys(), x => x)
+	}
+
+	return [
+		typeImage, statusBarIsValue, statusBarNonValue
+	];
 }
 
