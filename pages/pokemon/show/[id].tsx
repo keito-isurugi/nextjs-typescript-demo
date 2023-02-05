@@ -23,7 +23,7 @@ const PokeShowPage: NextPage = () => {
 		<>
 			{/* ヘッダー */}
 			<div className={`bg-gray-300 flex relative ${styles.poke_show_header}`}>
-				<div className='border-2 rounded w-[26px] h-[136px] bg-white border-gray-400 absolute top-[25%] left-[30px]'>{"<"}</div>
+				<div className='border-2 rounded w-[26px] h-[136px] bg-white border-gray-400 absolute top-[25%] left-[30px]' onClick={() => router.push(`/pokemon/show/${Number(id) - 1}`)}>{"<"}</div>
 				<div className="w-[60%] gap-10 flex mx-auto max-w-[1000px]">
 					<div className="w-[40%] mx-auto">
 						<img className="w-full" src={pokemonJson[id]?.img} alt={pokemonJson[id]?.name} />
@@ -35,7 +35,7 @@ const PokeShowPage: NextPage = () => {
 						</div>	
 					</div>
 				</div>
-				<div className='border-2 rounded w-[26px] h-[136px] bg-white border-gray-400 absolute top-[25%] right-[30px]'>{">"}</div>
+				<div className='border-2 rounded w-[26px] h-[136px] bg-white border-gray-400 absolute top-[25%] right-[30px]' onClick={() => router.push(`/pokemon/show/${Number(id) + 1}`)}>{">"}</div>
 			</div>
 
 			{/* メイン */}
@@ -78,7 +78,7 @@ const PokeShowPage: NextPage = () => {
 
 					{/* ステータス */}
 					<ul className='w-[49%] border-4 rounded p-10'>
-						{Object.keys(pokemonJson[id]?.status).map((status) => (
+						{/* {Object.keys(pokemonJson[id]?.status).map((status) => (
 							<dl className='flex mb-6'>
 								<dt className='font-bold text-xl w-[110px]'>{statusName(status)}</dt>
 								<dd className='text-xl font-medium'>
@@ -92,7 +92,7 @@ const PokeShowPage: NextPage = () => {
 									</ul>
 								</dd>
 							</dl>
-						))}
+						))} */}
 					</ul>
 				</div>
 				
