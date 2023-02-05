@@ -5,25 +5,23 @@ import { useEffect, useState } from 'react'
 import pokemonJson from '@/lib/json/pokemon_1.json';
 import styles from '@/public/css/pokemon.module.css'
 import { usePokeInfoHooks } from '@/hooks/pokemon/usePokeInfoHooks'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
 const PokeShowPage: NextPage = () => {
   const router = useRouter()
   const { id } = router.query
 	const [ typeImage, statusBarIsValue, statusBarNonValue, statusName ] = usePokeInfoHooks()
 
-	const [todoId, setTodoId] = useState()
-	const [title, setTitle] = useState("")
-	const [content, setContent] = useState("")
-
-
-	useEffect(() => {
-	}, [id])
+	console.log(pokemonJson[id]?.status === undefined)
+	console.log(pokemonJson[id]?.status !== undefined && Object.keys(pokemonJson[id]?.status))
 
   return (
 		<>
 			{/* ヘッダー */}
 			<div className={`bg-gray-300 flex relative ${styles.poke_show_header}`}>
-				<div className='border-2 rounded w-[26px] h-[136px] bg-white border-gray-400 absolute top-[25%] left-[30px]' onClick={() => router.push(`/pokemon/show/${Number(id) - 1}`)}>{"<"}</div>
+				<div className='border-2 rounded w-[30px] h-[136px] bg-white border-gray-400 absolute top-[25%] left-[30px] cursor-pointer flex justify-center items-center hover:bg-gray-50' onClick={() => router.push(`/pokemon/show/${Number(id) - 1}`)}>
+					<img className='transform rotate-[90deg]' src="/img/pokemon/arrow.svg" alt="" />
+				</div>
 				<div className="w-[60%] gap-10 flex mx-auto max-w-[1000px]">
 					<div className="w-[40%] mx-auto">
 						<img className="w-full" src={pokemonJson[id]?.img} alt={pokemonJson[id]?.name} />
@@ -32,10 +30,12 @@ const PokeShowPage: NextPage = () => {
 						<div className='rounded h-[60%] bg-white shadow-lg p-5'>
 							<p className='font-bold text-xl'>No.{pokemonJson[id]?.no}</p>
 							<p className='font-bold text-3xl'>{pokemonJson[id]?.name}</p>
-						</div>	
+						</div>
 					</div>
 				</div>
-				<div className='border-2 rounded w-[26px] h-[136px] bg-white border-gray-400 absolute top-[25%] right-[30px]' onClick={() => router.push(`/pokemon/show/${Number(id) + 1}`)}>{">"}</div>
+				<div className='border-2 rounded w-[30px] h-[136px] bg-white border-gray-400 absolute top-[25%] right-[30px] flex justify-center items-center cursor-pointer hover:bg-gray-50' onClick={() => router.push(`/pokemon/show/${Number(id) + 1}`)}>
+					<img className='transform rotate-[270deg]' src="/img/pokemon/arrow.svg" alt="" />
+				</div>
 			</div>
 
 			{/* メイン */}
@@ -78,7 +78,7 @@ const PokeShowPage: NextPage = () => {
 
 					{/* ステータス */}
 					<ul className='w-[49%] border-4 rounded p-10'>
-						{/* {Object.keys(pokemonJson[id]?.status).map((status) => (
+						{pokemonJson[id]?.status !== undefined && Object.keys(pokemonJson[id]?.status)?.map((status) => (
 							<dl className='flex mb-6'>
 								<dt className='font-bold text-xl w-[110px]'>{statusName(status)}</dt>
 								<dd className='text-xl font-medium'>
@@ -92,7 +92,7 @@ const PokeShowPage: NextPage = () => {
 									</ul>
 								</dd>
 							</dl>
-						))} */}
+						))}
 					</ul>
 				</div>
 				
