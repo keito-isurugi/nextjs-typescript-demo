@@ -9,7 +9,7 @@ import { usePokeInfoHooks } from '@/hooks/pokemon/usePokeInfoHooks'
 const PokeShowPage: NextPage = () => {
   const router = useRouter()
   const { id } = router.query
-	const [ typeImage, statusBarIsValue, statusBarNonValue ] = usePokeInfoHooks()
+	const [ typeImage, statusBarIsValue, statusBarNonValue, statusName ] = usePokeInfoHooks()
 
 	const [todoId, setTodoId] = useState()
 	const [title, setTitle] = useState("")
@@ -19,12 +19,11 @@ const PokeShowPage: NextPage = () => {
 	useEffect(() => {
 	}, [id])
 
-	console.log(pokemonJson[id]?.status.map()
-
   return (
 		<>
 			{/* ヘッダー */}
-			<div className={`bg-gray-300 flex ${styles.poke_show_header}`}>
+			<div className={`bg-gray-300 flex relative ${styles.poke_show_header}`}>
+				<div className='border-2 rounded w-[26px] h-[136px] bg-white border-gray-400 absolute top-[25%] left-[30px]'>{"<"}</div>
 				<div className="w-[60%] gap-10 flex mx-auto max-w-[1000px]">
 					<div className="w-[40%] mx-auto">
 						<img className="w-full" src={pokemonJson[id]?.img} alt={pokemonJson[id]?.name} />
@@ -36,6 +35,7 @@ const PokeShowPage: NextPage = () => {
 						</div>	
 					</div>
 				</div>
+				<div className='border-2 rounded w-[26px] h-[136px] bg-white border-gray-400 absolute top-[25%] right-[30px]'>{">"}</div>
 			</div>
 
 			{/* メイン */}
@@ -53,12 +53,12 @@ const PokeShowPage: NextPage = () => {
 							<dl className='flex'>
 								<dt className='font-bold text-xl'>タイプ：</dt>
 								<dd className='flex gap-x-3'>
-									<div className='text-[10px] font-medium w-[36px] text-center'>
-										<img src={typeImage(pokemonJson[id]?.type1)} alt="" />
+									<div className='text-[10px] font-medium text-center'>
+										<img className="w-[36px] my-0 mx-auto" src={typeImage(pokemonJson[id]?.type1)} alt="" />
 										{pokemonJson[id]?.type1}
 									</div>
-									<div className='text-[10px] font-medium w-[36px] text-center'>
-										<img src={typeImage(pokemonJson[id]?.type2)} alt="" />
+									<div className='text-[10px] font-medium text-center'>
+										<img className="w-[36px] my-0 mx-auto" src={typeImage(pokemonJson[id]?.type2)} alt="" />
 										{pokemonJson[id]?.type2}
 									</div>
 								</dd>
@@ -78,36 +78,21 @@ const PokeShowPage: NextPage = () => {
 
 					{/* ステータス */}
 					<ul className='w-[49%] border-4 rounded p-10'>
-						<dl className='flex mb-6'>
-							<dt className='font-bold text-xl'>HP</dt>
-							<dd className='text-xl font-medium'>
-								<ul>
-									<li></li>
-								</ul>
-								<ul>
-									<li></li>
-								</ul>
-							</dd>
-						</dl>
-						<dl className='flex mb-6'>
-							<dt className='font-bold text-xl'>こうげき</dt>
-							<dd className='text-xl font-medium'>
-								<ul className='flex'>
-									{statusBarIsValue(pokemonJson[id]?.status.attack).map((i) => (
-										<li className='bg-orange-400 rounded-[8px] w-[15px] h-[35px] mr-[5px]'></li>
-									))}
-									{statusBarNonValue(pokemonJson[id]?.status.attack).map((i) => (
-										<li className='bg-gray-200 rounded-[8px] w-[15px] h-[35px] mr-[5px]'></li>
-									))}
-								</ul>
-								<ul>
-									<li></li>
-								</ul>
-								<ul>
-									<li></li>
-								</ul>
-							</dd>
-						</dl>
+						{Object.keys(pokemonJson[id]?.status).map((status) => (
+							<dl className='flex mb-6'>
+								<dt className='font-bold text-xl w-[110px]'>{statusName(status)}</dt>
+								<dd className='text-xl font-medium'>
+									<ul className='flex'>
+										{statusBarIsValue(pokemonJson[id]?.status[status]).map((i) => (
+											<li className='bg-amber-400 rounded-[8px] w-[15px] h-[35px] mr-[5px]'></li>
+										))}
+										{statusBarNonValue(pokemonJson[id]?.status[status]) !== 0 && statusBarNonValue(pokemonJson[id]?.status[status]).map((i) => (
+											<li className='bg-gray-200 rounded-[8px] w-[15px] h-[35px] mr-[5px]'></li>
+										))}
+									</ul>
+								</dd>
+							</dl>
+						))}
 					</ul>
 				</div>
 				

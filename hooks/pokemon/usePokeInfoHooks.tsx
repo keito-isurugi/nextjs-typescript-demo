@@ -41,18 +41,45 @@ export const usePokeInfoHooks = () => {
 		}
 	}
 
-	const statusBarIsValue = (status: number) => {
-		const statusRatio = Math.round(status / 15)
-		return Array.from(Array(statusRatio).keys(), x => x)
+	const statusName = (key: string) => {
+		switch (key) {
+			case "hp":
+				return "HP"
+		case "attack":
+				return "こうげき"
+			case "defense":
+				return "ぼうぎょ"
+			case "special_attack":
+				return "とくこう"
+			case "special_defense":
+				return "とくぼう"
+			case "speed":
+				return "すばやさ"
+		}
+	}
+
+	const statusBarIsValue = (status: number = 15) => {
+		let statusRatio = Math.round(status / 15) !== 0 ? Math.round(status / 15) : 1
+		if(statusRatio >= 15) {
+			return Array.from(Array(15).keys(), x => x)
+		} else {
+			return Array.from(Array(statusRatio).keys(), x => x)
+		}
 	}	
 
-	const statusBarNonValue = (status: number) => {
-		const statusRatio = 15 -  Math.round(status / 15)
-		return Array.from(Array(statusRatio).keys(), x => x)
+	const statusBarNonValue = (status: number = 15) => {
+		console.log(status)
+		let statusRatio = Math.round(status / 15) !== 0 ? 15 - Math.round(status / 15) : 14
+		console.log(statusRatio)
+		if(statusRatio <= 0) {
+			return 0
+		} else {
+			return Array.from(Array(statusRatio).keys(), x => x)
+		}
 	}
 
 	return [
-		typeImage, statusBarIsValue, statusBarNonValue
+		typeImage, statusBarIsValue, statusBarNonValue, statusName
 	];
 }
 

@@ -101,7 +101,6 @@ export default function Home() {
 					<li 
 						key={index} 
 						className={`rounded shadow-lg cursor-pointer ${styles.card}`} 
-						// onClick={() => setPokeDetail(index)}
 						onClick={() => router.push(`/pokemon/show/${index}`)}
 					>
 						<div className="w-full mx-auto bg-gray-300">
@@ -114,40 +113,6 @@ export default function Home() {
 				))}
 			</ul>
 		</div>
-
-			<Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-				<div className="rounded overflow-hidden shadow-lg bg-white" style={style}>
-					<div className="w-full mx-auto bg-gray-300">
-						<img className="w-full" src={datas[pokeNum].img} alt={datas[pokeNum].name} />	
-					</div>
-					<div className="px-3 py-2">
-						<dl className='flex flex-wrap mb-2'>
-							<dt className='font-bold text-xl'>No.{datas[pokeNum].no}：</dt>
-							<dd className='font-bold text-xl'>{datas[pokeNum].name}</dd>
-						</dl>
-						<dl className='flex flex-wrap mb-2'>
-							<dt className='font-bold text-xl'>分類：</dt>
-							<dd className='font-bold text-xl'>{datas[pokeNum].classification}</dd>
-						</dl>
-						<dl className='flex flex-wrap mb-2'>
-							<dt className='font-bold text-xl'>タイプ：</dt>
-							<dd className='font-bold text-xl'>{datas[pokeNum].type1}、{datas[pokeNum].type2}</dd>
-						</dl>
-						<dl className='flex flex-wrap mb-2'>
-							<dt className='font-bold text-xl'>高さ：{datas[pokeNum].height / 10}m　重さ：{datas[pokeNum].weight / 10}kg</dt>
-						</dl>
-						<dl className='flex mb-2'>
-							<dt className='w-3/6 font-bold text-xl'>説明：</dt>
-							<dd className='font-bold text-xl'>{datas[pokeNum].flavor_text}</dd>
-						</dl>
-					</div>
-				</div>
-      </Modal>
     </>
   )
 }
