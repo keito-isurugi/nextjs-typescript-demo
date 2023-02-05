@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import Modal from '@mui/material/Modal';
-import pokemonJson from '@/lib/json/pokemon_999.json';
-import styels from '@/public/css/pokemon.module.css'
+import pokemonJson from '@/lib/json/pokemon_1.json';
+import styles from '@/public/css/pokemon.module.css'
 import dynamic from 'next/dynamic'
 import Button from '@mui/material/Button';
+import { usePokeInfoHooks } from '@/hooks/pokemon/usePokeInfoHooks'
 
 export default function Home() {
 	const [datas, setDatas] = useState<any[]>(pokemonJson)
@@ -12,6 +13,7 @@ export default function Home() {
 	const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+	const [ typeImage ] = usePokeInfoHooks()
 	const style = {
 		position: 'absolute' as 'absolute',
 		top: '50%',
@@ -76,7 +78,7 @@ export default function Home() {
 
   return (
     <>
-		<div className='px-10'>
+		<div className='px-5'>
 			<div className='mb-6 flex gap-6 justify-between'>
 				<p className='font-bold text-3xl'>ポケモン図鑑：{createPokeNomArray(generation)}　{datas.length.toLocaleString()}匹</p>
 				<select 
@@ -90,19 +92,28 @@ export default function Home() {
 					))}
 				</select>
 			</div>
-			<div className='flex gap-4 flex-wrap justify-between'>
+
+			<ul 
+				// className='w-[90%] flex flex-wrap gap-x-1 gap-y-3 justify-between my-0 mx-auto'
+				className={`${styles.poke_wrap}`}
+			>
 				{datas.map((data, index) => (
-					<div key={index} className={`w-1/6 rounded overflow-hidden shadow-lg cursor-pointer ${styels.card}`} onClick={() => setPokeDetail(index)}>
+					<li 
+						key={index} 
+						className={`w-[11.5vw] rounded overflow-hidden shadow-lg cursor-pointer ${styles.card}`} 
+						onClick={() => setPokeDetail(index)}
+					>
 						<div className="w-full mx-auto bg-gray-300">
 							<img className="w-full" src={data.img} alt={data.name} />	
 						</div>
 						<div className="px-2 py-2">
-							<div className="font-bold text-xl text-center">No.{data.no}：{data.name}</div>
+							<div className="font-bold text-x">{data.name}</div>
 						</div>
-					</div>
+					</li>
 				))}
-			</div>
+			</ul>
 		</div>
+
 			<Modal
         open={open}
         onClose={handleClose}
