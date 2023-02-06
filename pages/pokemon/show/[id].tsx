@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import type { NextPage } from 'next'
 import { useEffect, useState } from 'react'
-import pokemonJson from '@/lib/json/pokemon_1.json';
+import pokemonJson from '@/lib/json/pokemon_999.json';
 import styles from '@/public/css/pokemon.module.css'
 import { usePokeInfoHooks } from '@/hooks/pokemon/usePokeInfoHooks'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -18,7 +18,7 @@ const PokeShowPage: NextPage = () => {
   return (
 		<>
 			{/* ヘッダー */}
-			<div className={`bg-gray-300 flex relative ${styles.poke_show_header}`}>
+			<div className={`bg-gray-100 flex relative ${styles.poke_show_header}`}>
 				<div className='border-2 rounded w-[30px] h-[136px] bg-white border-gray-400 absolute top-[25%] left-[30px] cursor-pointer flex justify-center items-center hover:bg-gray-50' onClick={() => router.push(`/pokemon/show/${Number(id) - 1}`)}>
 					<img className='transform rotate-[90deg]' src="/img/pokemon/arrow.svg" alt="" />
 				</div>

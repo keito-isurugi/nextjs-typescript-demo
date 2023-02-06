@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import Modal from '@mui/material/Modal';
-import pokemonJson from '@/lib/json/pokemon_1.json';
+import pokemonJson from '@/lib/json/pokemon_999.json';
 import styles from '@/public/css/pokemon.module.css'
 import dynamic from 'next/dynamic'
 import Button from '@mui/material/Button';
