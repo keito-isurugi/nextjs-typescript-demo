@@ -1,18 +1,116 @@
 openapi: "3.0.3"
 
 info:
-  title: "Sample API"
+  title: "サンプルAPI"
+  description: "サンプルとして作成したAPIです"
   version: "1.0.0"
 
+servers:
+  - url: "http://localhost:3000"
+    description: "ローカル環境"
+  - url: "http://sample.com"
+    description: "本番環境"
+
+tags:
+  - name: "users"
+    description: "ユーザー"
+  - name: "posts"
+    description: "記事"
+
 paths:
-  "/api/v1/hello":
+  "/users":
     get:
-      summary: "hello"
+      summary: "ユーザー一覧の取得"
+      tags: ["users"]
+      deprecated: false
+      responses:
+        "200":
+          description: "成功"
+  "/users/{userId}":
+    get:
+      summary: "ユーザーの取得"
+      tags: ["users"]
+      deprecated: false
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema: { type: string }
       responses:
         "200":
           description: "成功"
           content:
             application/json:
               schema:
-                type: string
-                example: "hello"
+                $ref: "#/components/schemas/User"
+  "/posts":
+    post:
+      summary: "記事の新規投稿"
+      tags: ["posts"]
+      deprecated: false
+      requestBody:
+        description: "投稿内容"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title: { type: string, example: "タイトル" }
+                content: { type: string, example: "記事本文" }
+      # 成功レスポンス
+      responses:
+        "201":
+          description: "成功"
+        "400":
+          description: "Client side error"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code: { type: string }
+                  type: { type: string }
+                  message: { type: string }
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field: { type: string }
+                        code: { type: string }
+  "/posts/{id}":
+    put:
+      summary: "記事の更新"
+      tags: ["posts"]
+      deprecated: false
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type:string }
+          example: "1"
+        - name: X-Api-key
+          in: header
+          required: true
+          description: "APIキーをヘッダーに付与"
+          schema: { type: string }
+          example: "xxx-xxx-xxx-xxx"
+        - name: token
+          in: cookie
+          description: "アクセストークン"
+          required: true
+          schema: { type: string }
+          example: "xxx-xxx-xxx"
+      responses:
+        "201":
+          description: "成功"
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id: { type: number, example: 1 }
+        name: { type: string, example: user }
+        address: { type: string, example: test@com }
